@@ -9,7 +9,6 @@ import java.util.List;
  * 
  * @author 	<a href="mailto:xishizhang@gmail.com">ZhangShixi</a>
  * @version 1.0, 18/10/2011
- * @since 	JDK1.5
  */
 public class Page<TYPE> implements Serializable {
 
