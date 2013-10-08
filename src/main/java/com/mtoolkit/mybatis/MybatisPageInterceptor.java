@@ -19,25 +19,29 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.RowBounds;
 
 import com.mlogger.Loggers;
-import com.mtoolkit.page.Dialect;
-import com.mtoolkit.page.MysqlDialect;
 import com.mtoolkit.page.Page;
+import com.mtoolkit.page.mybatis.Dialect;
+import com.mtoolkit.page.mybatis.DialectFactory;
+import com.mtoolkit.page.mybatis.MysqlDialect;
 
 /**
- * @author Administrator
+ * @author Michael
  */
 @Intercepts({
     @Signature(type=StatementHandler.class, method="prepare", args=Connection.class)
 })
 public class MybatisPageInterceptor implements Interceptor {
 
+	private Dialect dialect;
+	private String  dialectClassName;
+	
     /** page parameter name */
     public static final String PARAMETER_PAGE = "page";
     /** page parameter holder */
     public static final ThreadLocal<Page<?>> PAGE_HOLDER = new ThreadLocal<Page<?>>();
     
     /** logger utility */
-    private static final Loggers logger = Loggers.getLoggers(MybatisPageInterceptor.class);
+    private final Loggers logger = Loggers.getLoggers(MybatisPageInterceptor.class);
     
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -83,10 +87,10 @@ public class MybatisPageInterceptor implements Interceptor {
 
     @Override
     public void setProperties(Properties props) {
-        // do nothing now
+    	this.dialectClassName = props.getProperty("dialect");
     }
     
-    // ---- private methods ---------------------------------------------------------------
+    /* ---- private methods ---- */
     private Page<?> getPageVariable(MetaObject metaData) {
         ParameterHandler parameter = (ParameterHandler) metaData.getValue("delegate.parameterHandler");
         Object targetParam = parameter.getParameterObject();
@@ -102,8 +106,28 @@ public class MybatisPageInterceptor implements Interceptor {
     }
 
     private Dialect getDialectVariable(MetaObject metaData) {
-        // TODO Auto-generated method stub
-        return new MysqlDialect();
+    	if (this.dialect != null) {
+    		return this.dialect;
+    	} else if (this.dialectClassName == null) {
+    		// TODO: get dialect class name from metaData.
+    	}
+    	
+    	// not set, use the default.
+    	if (this.dialectClassName == null) {
+    		this.dialectClassName = MysqlDialect.class.getName();
+    	}
+    	
+		try {
+			this.dialect = DialectFactory.newDialect(this.dialectClassName);
+		} catch (ClassNotFoundException e) {
+			throw new IllegalArgumentException("Class not found: " + this.dialectClassName);
+		} catch (InstantiationException e) {
+			throw new IllegalArgumentException("Could not new instance: " + this.dialectClassName);
+		} catch (IllegalAccessException e) {
+			throw new IllegalArgumentException("Could not access instance: " + this.dialectClassName);
+		}
+    	
+        return this.dialect;
     }
 
     private int selectPageTotalData(Connection connection, String countSql) throws SQLException {

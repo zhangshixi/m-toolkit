@@ -14,6 +14,7 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import com.mlogger.Loggers;
 
 /**
+ * Property configurer adapter.
  * 
  * @author michael
  * @version $Id: PropertyConfigurerAdapter.java, v 0.1 2012-8-16 下午1:28:35 michael Exp $
@@ -51,12 +52,12 @@ public class PropertyConfigurerAdapter extends PropertyPlaceholderConfigurer {
     }
     
     @Override
-    protected void processProperties(
-            ConfigurableListableBeanFactory beanFactoryToProcess,
-            Properties props) throws BeansException {
-    	doRecordPropertiesLog(props);
+    protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props)
+    		throws BeansException {
     	
         super.processProperties(beanFactoryToProcess, props);
+        
+        doRecordPropertiesLog(props);
         
         if (_propertyLoader != null) {
             _propertyLoader.load(props);
@@ -64,9 +65,8 @@ public class PropertyConfigurerAdapter extends PropertyPlaceholderConfigurer {
     }
 
 	private void doRecordPropertiesLog(Properties props) {
-		logger.debug("Load properties:");
 		for (Entry<Object, Object> entry : props.entrySet()) {
-			logger.debug("    {0}={1}", entry.getKey(), entry.getValue());
+			logger.debug("   {0}={1}", entry.getKey(), entry.getValue());
 		}
 	}
     

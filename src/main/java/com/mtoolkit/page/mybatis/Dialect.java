@@ -1,4 +1,6 @@
-package com.mtoolkit.page;
+package com.mtoolkit.page.mybatis;
+
+import com.mtoolkit.page.Page;
 
 public interface Dialect {
 	

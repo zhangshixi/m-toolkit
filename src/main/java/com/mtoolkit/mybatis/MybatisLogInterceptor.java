@@ -32,7 +32,7 @@ public class MybatisLogInterceptor implements Interceptor {
 	public static final long DEFAULT_SQL_SLOW_EXECUTE_TIME = 100L;
 	
 	/** logger utility */
-    private static final Loggers logger = Loggers.getLoggers(MybatisLogInterceptor.class);
+    private final Loggers logger = Loggers.getLoggers(MybatisLogInterceptor.class);
     
 	@Override
 	public Object intercept(Invocation invocation) throws Throwable {

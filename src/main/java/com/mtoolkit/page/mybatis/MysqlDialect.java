@@ -1,13 +1,18 @@
-package com.mtoolkit.page;
+package com.mtoolkit.page.mybatis;
 
+import com.mtoolkit.page.Page;
 import com.mtoolkit.page.Page.OrderType;
 import com.mtoolkit.util.EmptyUtil;
 
 public class MysqlDialect extends AbstractDialect {
 	
+	public MysqlDialect() {
+	}
+	
 	@Override
 	public String getCountSql(String targetSql) {
 		String countSql = sqlTrim(targetSql);
+		
 		String upperSql = countSql.toUpperCase();
 		StringBuilder builder = new StringBuilder(countSql);
 		
@@ -17,7 +22,7 @@ public class MysqlDialect extends AbstractDialect {
 		}
 
 		builder.delete(0, upperSql.indexOf(FROM));
-		builder.insert(0, "SELECT COUNT(1)");
+		builder.insert(0, "SELECT COUNT(1) ");
 
 		return builder.toString();
 	}
@@ -44,12 +49,12 @@ public class MysqlDialect extends AbstractDialect {
 				index += ORDER_BY.length();
 				builder.insert(index, order + DOT);
 			} else {
-				builder.append(ORDER_BY).append(order);
+				builder.append(BLANK).append(ORDER_BY).append(BLANK).append(order);
 			}
 		}
 		
 		// limit
-		builder.append(LIMIT);
+		builder.append(BLANK).append(LIMIT).append(BLANK);
 		builder.append(Math.max(0, (page.getPageIndex() - 1) * page.getPageSize()));
 		builder.append(DOT);
 		builder.append(page.getPageSize());
@@ -59,23 +64,11 @@ public class MysqlDialect extends AbstractDialect {
 	
 	private String sqlTrim(String targetSql) {
 		String trimedSql = targetSql.trim();
-		if (trimedSql.endsWith(SQL_ENDED_CHARACTER)) {
-			trimedSql = trimedSql.substring(0, trimedSql.length() - 1 - SQL_ENDED_CHARACTER.length());
+		if (trimedSql.endsWith(SQL_EOF)) {
+			trimedSql = trimedSql.substring(0, trimedSql.length() - 1 - SQL_EOF.length());
 		}
 		
 		return trimedSql;
-	}
-	
-	public static void main(String[] args) {
-		String sql = "SELECT * FROM user WHERE id = ? ORDER BY name DESC";
-		Page<Object> page = new Page<Object>(2, 5);
-		page.setOrderBy("email");
-		
-		MysqlDialect instance = new MysqlDialect();
-		String countSql = instance.getCountSql(sql);
-		System.err.println(countSql);
-		String limitSql = instance.getLimitSql(sql, page);
-		System.err.println(limitSql);
 	}
 	
 }

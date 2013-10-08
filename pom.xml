@@ -178,6 +178,17 @@
 
 	</dependencies>
 	
+	<distributionManagement>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<url>${nexus.host}/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>nexus-releases</id>
+			<url>${nexus.host}/nexus/content/repositories/releases/</url>
+		</repository>
+	</distributionManagement>
+	
 	<scm>
 		<tag>HEAD</tag>
 		<url>https://github.com/zhangshixi/m-toolkit</url>

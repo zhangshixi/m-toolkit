@@ -11,6 +11,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.mlogger.Loggers;
+import com.mtoolkit.util.EmptyUtil;
 
 /**
  * 
@@ -30,20 +31,19 @@ public class SpringMvcDispatcherServlet extends DispatcherServlet {
     @Override
     protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String requestUri = URL_PATH_HELPER.getRequestUri(request);
-        LOGGER.debug("requestUri: " + requestUri);
-        LOGGER.debug("SpringMvcDispatcherServlet starting ....................");
+        LOGGER.debug("==> SpringMvc process starting: {0}", requestUri);
         
         logBeforeRequest(request);
         
         long startTime = System.currentTimeMillis();
-        
         super.doService(request, response);
-        
         long endTime = System.currentTimeMillis();
-        LOGGER.debug("<== Request execute time: [{0}] ms", (endTime - startTime));
         
         logAfterRequest(response);
-        LOGGER.debug("SpringMvcDispatcherServlet ended ....................");
+
+        LOGGER.debug("<== Request execute time: [{0}] ms", (endTime - startTime));
+        
+        LOGGER.debug("SpringMvc process ended.");
     }
 
     /**
@@ -53,10 +53,15 @@ public class SpringMvcDispatcherServlet extends DispatcherServlet {
      */
     @SuppressWarnings("unchecked")
     private void logBeforeRequest(HttpServletRequest request) {
-        LOGGER.debug("==> Start http request : {0}", request.getRequestURI());
-        LOGGER.debug("==> Request contentType: {0}", request.getContentType());
-        LOGGER.debug("==> Request parameters :");
+    	String contentType = request.getContentType();
+    	if (EmptyUtil.isNotNullEmpty(contentType)) {
+    		LOGGER.debug("==> Request contentType: {0}", request.getContentType());
+    	}
+    	
         Map<String, String[]> paramMap = request.getParameterMap();
+        if (EmptyUtil.isNotNullEmpty(paramMap)) {
+        	LOGGER.debug("==> Request parameters :");
+        }
         for (Entry<String, String[]> entry : paramMap.entrySet()) {
             LOGGER.debug("    {0} = {1}", 
                 entry.getKey(), Arrays.toString(entry.getValue()));
@@ -69,8 +74,10 @@ public class SpringMvcDispatcherServlet extends DispatcherServlet {
      * @param request http request.
      */
     private void logAfterRequest(HttpServletResponse response) {
-        LOGGER.debug("<== Response contentType: {0}", response.getContentType());
-        LOGGER.debug("<== Http request ended !!");
+    	String contentType = response.getContentType();
+    	if (EmptyUtil.isNotNullEmpty(contentType)) {
+    		LOGGER.debug("<== Response contentType: {0}", response.getContentType());
+    	}
     }
     
 }
