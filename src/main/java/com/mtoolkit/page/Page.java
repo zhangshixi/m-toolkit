@@ -107,7 +107,8 @@ public class Page<TYPE> implements Serializable {
 		_remainPage = _totalPage > _pageIndex ? _totalPage - _pageIndex : 0;
 		
 		if (_pageIndex > _totalPage) {
-			_fromIndex =_toIndex = Integer.MAX_VALUE;
+			_fromIndex = _toIndex = Integer.MAX_VALUE;
+			_pageIndex = _totalPage;
 		} else {
 			_fromIndex = (_pageIndex - 1) * _pageSize;
 			_toIndex = _totalData > _fromIndex + _pageSize 
@@ -308,6 +309,26 @@ public class Page<TYPE> implements Serializable {
 	 */
 	public void setResultList(List<TYPE> _resultList) {
 		this._resultList = _resultList;
+	}
+	
+	/**
+	 * Returns current is first page or not.
+	 * 
+	 * @return {@code true} current is first page;
+	 * 		   {@code false} otherwise.
+	 */
+	public boolean isFirstPage() {
+		return this._pageIndex == 1;
+	}
+	
+	/**
+	 * Returns current is last page or not.
+	 * 
+	 * @return {@code true} current is first page;
+	 * 		   {@code false} otherwise.
+	 */
+	public boolean isLastPage() {
+		return this._pageIndex == this._totalPage;
 	}
 	
 	/**
