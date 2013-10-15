@@ -2,7 +2,6 @@ package com.mtoolkit.cache.decorator;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -50,16 +49,6 @@ public class SerializeValueCache extends CacheDecorator {
 	}
 
 	@Override
-	public boolean put(String key, Object value, Date expiredDate) {
-		return getDelegateCache().put(key, serialize(value), expiredDate);
-	}
-	
-	@Override
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate) {
-		return getDelegateCache().asyncPut(key, serialize(value), expiredDate);
-	}
-	
-	@Override
 	public boolean put(String key, Object value, CasOperation<Object> operation) {
 		return getDelegateCache().put(key, serialize(value), operation);
 	}
@@ -77,16 +66,6 @@ public class SerializeValueCache extends CacheDecorator {
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime, CasOperation<Object> operation) {
 		return getDelegateCache().asyncPut(key, serialize(value), expiredTime, operation);
-	}
-	
-	@Override
-	public boolean put(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-		return getDelegateCache().put(key, serialize(value), expiredDate, operation);
-	}
-	
-	@Override
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-		return getDelegateCache().asyncPut(key, serialize(value), expiredDate, operation);
 	}
 	
 	@Override

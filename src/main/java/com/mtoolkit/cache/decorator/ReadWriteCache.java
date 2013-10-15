@@ -1,6 +1,5 @@
 package com.mtoolkit.cache.decorator;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -27,10 +26,11 @@ public class ReadWriteCache extends CacheDecorator {
     }
     
     @Override
-    public void startup() {
+    public Cache startup() {
         lockWrite();
         try {
             getDelegateCache().startup();
+            return this;
         } finally {
             unLockWrite();
         }
@@ -117,26 +117,6 @@ public class ReadWriteCache extends CacheDecorator {
     }
     
     @Override
-    public boolean put(String key, Object value, Date expiredDate) {
-        lockWrite();
-        try {
-            return getDelegateCache().put(key, value, expiredDate);
-        } finally {
-            unLockWrite();
-        }
-    }
-    
-    @Override
-    public Future<Boolean> asyncPut(String key, Object value, Date expiredDate) {
-        lockWrite();
-        try {
-            return getDelegateCache().asyncPut(key, value, expiredDate);
-        } finally {
-            unLockWrite();
-        }
-    }
-    
-    @Override
     public boolean put(String key, Object value, CasOperation<Object> operation) {
         lockWrite();
         try {
@@ -176,26 +156,6 @@ public class ReadWriteCache extends CacheDecorator {
         }
     }
     
-    @Override
-    public boolean put(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-        lockWrite();
-        try {
-            return getDelegateCache().put(key, value, expiredDate, operation);
-        } finally {
-            unLockWrite();
-        }
-    }
-    
-    @Override
-    public Future<Boolean> asyncPut(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-        lockWrite();
-        try {
-            return getDelegateCache().asyncPut(key, value, expiredDate, operation);
-        } finally {
-            unLockWrite();
-        }
-    }
-
     @Override
     public <T> T get(String key) {
         lockRead();

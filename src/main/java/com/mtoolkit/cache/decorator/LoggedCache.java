@@ -1,7 +1,6 @@
 package com.mtoolkit.cache.decorator;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -9,7 +8,6 @@ import java.util.concurrent.Future;
 import com.mlogger.Loggers;
 import com.mtoolkit.cache.Cache;
 import com.mtoolkit.cache.CasOperation;
-import com.mtoolkit.util.DateUtil;
 
 public class LoggedCache extends CacheDecorator {
 
@@ -20,7 +18,7 @@ public class LoggedCache extends CacheDecorator {
 	}
 	
 	@Override
-	public void startup() {
+	public Cache startup() {
 		if (isInitialized()) {
 			LOGGER.warn("Cache:[id={0}] has been initialized.", getId());
 		}
@@ -28,6 +26,8 @@ public class LoggedCache extends CacheDecorator {
 		getDelegateCache().startup();
 		
 		LOGGER.info("Cache:[id={0}] startup succeed.", getId());
+		
+		return this;
 	}
 	
 	@Override
@@ -92,22 +92,6 @@ public class LoggedCache extends CacheDecorator {
 	}
 	
 	@Override
-	public boolean put(String key, Object value, Date expiredDate) {
-		boolean result = getDelegateCache().put(key, value, expiredDate);
-		LOGGER.debug("Put value into cache - Argument:[key={0}, value={1}, expiredDate={2}] - Result:[{3}].", 
-		    key, value, dateFormat(expiredDate), Boolean.valueOf(result));
-		return result;
-	}
-	
-	@Override
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate) {
-		Future<Boolean> result = getDelegateCache().asyncPut(key, value, expiredDate);
-		LOGGER.debug("Async put value into cache - Argument:[key={0}, value={1}, expiredDate={2}].", 
-		    key, value, dateFormat(expiredDate));
-		return result;
-	}
-	
-	@Override
 	public boolean put(String key, Object value, CasOperation<Object> operation) {
 		boolean result = getDelegateCache().put(key, value, operation);
 		LOGGER.debug("Put value into cache - Argument:[key={0}, value={1}, casOperation={2}] - Result:[{3}].", 
@@ -139,22 +123,6 @@ public class LoggedCache extends CacheDecorator {
 		return result;
 	}
 	
-	@Override
-	public boolean put(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-		boolean result = getDelegateCache().put(key, value, expiredDate, operation);
-		LOGGER.debug("Put value into cache - Argument:[key={0}, value={1}, expiredDate={2}, casOperation={3}] - Result:[{4}].", 
-			key, value, dateFormat(expiredDate), operation, Boolean.valueOf(result));
-		return result;
-	}
-	
-	@Override
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-		Future<Boolean> result = getDelegateCache().asyncPut(key, value, expiredDate, operation);
-		LOGGER.debug("Async put value into cache - Argument:[key={0}, value={1}, expiredDate={2}, casOperation={3}].", 
-		    key, value, dateFormat(expiredDate), operation);
-		return result;
-	}
-
 	@Override
 	public <T> T get(String key) {
 		T result =  getDelegateCache().get(key);
@@ -256,11 +224,6 @@ public class LoggedCache extends CacheDecorator {
 		LOGGER.debug("Async decrease number into cache - Argument:[key={0}, value={1}].", 
 		    key, Long.valueOf(value));
 		return result;
-	}
-	
-	// ---- private classes
-	private String dateFormat(Date date) {
-		return DateUtil.getDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(date);
 	}
 	
 }

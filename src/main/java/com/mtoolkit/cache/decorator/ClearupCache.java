@@ -1,7 +1,6 @@
 package com.mtoolkit.cache.decorator;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -30,9 +29,10 @@ public class ClearupCache extends CacheDecorator {
     }
     
     @Override
-    public void startup() {
+    public Cache startup() {
         _lastClearTime = System.currentTimeMillis();
         getDelegateCache().startup();
+        return this;
     }
 
     @Override
@@ -84,18 +84,6 @@ public class ClearupCache extends CacheDecorator {
     }
     
     @Override
-    public boolean put(String key, Object value, Date expiredDate) {
-        clearWhenStale();
-        return getDelegateCache().put(key, value, expiredDate);
-    }
-    
-    @Override
-    public Future<Boolean> asyncPut(String key, Object value, Date expiredDate) {
-        clearWhenStale();
-        return getDelegateCache().asyncPut(key, value, expiredDate);
-    }
-    
-    @Override
     public boolean put(String key, Object value, CasOperation<Object> operation) {
         clearWhenStale();
         return getDelegateCache().put(key, value, operation);
@@ -119,18 +107,6 @@ public class ClearupCache extends CacheDecorator {
         return getDelegateCache().asyncPut(key, value, expiredTime, operation);
     }
     
-    @Override
-    public boolean put(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-        clearWhenStale();
-        return getDelegateCache().put(key, value, expiredDate, operation);
-    }
-    
-    @Override
-    public Future<Boolean> asyncPut(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-        clearWhenStale();
-        return getDelegateCache().asyncPut(key, value, expiredDate, operation);
-    }
-
     @Override
     public <T> T get(String key) {
         if (clearWhenStale()) {

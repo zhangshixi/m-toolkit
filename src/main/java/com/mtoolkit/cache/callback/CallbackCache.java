@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.Future;
 
 import com.mtoolkit.cache.Cache;
+import com.mtoolkit.cache.CasOperation;
 import com.mtoolkit.cache.decorator.CacheDecorator;
 import com.mtoolkit.cache.support.AbstractCache.SucceedFuture;
 
@@ -28,21 +29,111 @@ public class CallbackCache extends CacheDecorator {
 	}
 
 	// ---- put methods
-	public boolean put(Object param, KeyGenerator key, Object value) {
-	    return put(generateKey(param, key), value);
+	public boolean put(KeyGenerator key, Object value) {
+	    return put(generateKey(key), value);
+	}
+
+	public boolean put(KeyGenerator key, ValueLoader<Object> value) {
+		return put(key, loadValue(value));
 	}
 	
-	public boolean put(Object param, KeyGenerator key, ValueLoader<Object> value) {
-	    return put(generateKey(param, key), loadValue(param, value));
+	public boolean put(KeyGenerator key, Object value, long expiredTime) {
+	    return put(generateKey(key), value, expiredTime);
+	}
+	
+	public boolean put(KeyGenerator key, ValueLoader<Object> value, long expiredTime) {
+		return put(key, loadValue(value), expiredTime);
+	}
+	
+	public boolean put(KeyGenerator key, Object value, CasOperation<Object> operation) {
+		return put(generateKey(key), value, operation);
+	}
+
+	public boolean put(KeyGenerator key, ValueLoader<Object> value, CasOperation<Object> operation) {
+		return put(key, loadValue(value), operation);
+	}
+	
+	public boolean put(KeyGenerator key, Object value, long expiredTime, CasOperation<Object> operation) {
+		return put(generateKey(key), value, expiredTime, operation);
+	}
+	
+	public boolean put(KeyGenerator key, ValueLoader<Object> value, long expiredTime, CasOperation<Object> operation) {
+		return put(key, loadValue(value), expiredTime, operation);
+	}
+	
+	public Future<Boolean> asyncPut(KeyGenerator key, Object value) {
+	    return asyncPut(generateKey(key), value);
+	}
+
+	public Future<Boolean> asyncPut(KeyGenerator key, ValueLoader<Object> value) {
+		return asyncPut(key, loadValue(value));
+	}
+	
+	public Future<Boolean> asyncPut(KeyGenerator key, Object value, long expiredTime) {
+	    return asyncPut(generateKey(key), value, expiredTime);
+	}
+	
+	public Future<Boolean> asyncPut(KeyGenerator key, ValueLoader<Object> value, long expiredTime) {
+		return asyncPut(key, loadValue(value), expiredTime);
+	}
+	
+	public Future<Boolean> asyncPut(KeyGenerator key, Object value, CasOperation<Object> operation) {
+		return asyncPut(generateKey(key), value, operation);
+	}
+
+	public Future<Boolean> asyncPut(KeyGenerator key, ValueLoader<Object> value, CasOperation<Object> operation) {
+		return asyncPut(key, loadValue(value), operation);
+	}
+	
+	public Future<Boolean> asyncPut(KeyGenerator key, Object value, long expiredTime, CasOperation<Object> operation) {
+		return asyncPut(generateKey(key), value, expiredTime, operation);
+	}
+	
+	public Future<Boolean> asyncPut(KeyGenerator key, ValueLoader<Object> value, long expiredTime, CasOperation<Object> operation) {
+		return asyncPut(key, loadValue(value), expiredTime, operation);
 	}
 
 	// ---- get methods
-	public <V> V get(Object param, KeyGenerator key, ValueLoader<V> value) {
-		String cacheKey = generateKey(param, key);
+	public <V> V get(KeyGenerator key) {
+		return get(generateKey(key));
+	}
+	
+	public <V> V get(KeyGenerator key, ValueLoader<V> value) {
+		String cacheKey = generateKey(key);
 		V cacheValue = get(cacheKey);
 		if (cacheValue == null) {
-			cacheValue = loadValue(param, value);
+			cacheValue = loadValue(value);
 			asyncPut(cacheKey, cacheValue);
+		}
+		return cacheValue;
+	}
+	
+	public <V> V get(KeyGenerator key, ValueLoader<V> value, long expiredTime) {
+		String cacheKey = generateKey(key);
+		V cacheValue = get(cacheKey);
+		if (cacheValue == null) {
+			cacheValue = loadValue(value);
+			asyncPut(cacheKey, cacheValue, expiredTime);
+		}
+		return cacheValue;
+	}
+	
+	public <V> V get(KeyGenerator key, ValueLoader<V> value, CasOperation<Object> operation) {
+		String cacheKey = generateKey(key);
+		V cacheValue = get(cacheKey);
+		if (cacheValue == null) {
+			cacheValue = loadValue(value);
+			asyncPut(cacheKey, cacheValue, operation);
+		}
+		return cacheValue;
+	}
+	
+	public <V> V get(KeyGenerator key, ValueLoader<V> value, long expiredTime, CasOperation<Object> operation) {
+		String cacheKey = generateKey(key);
+		V cacheValue = get(cacheKey);
+		if (cacheValue == null) {
+			cacheValue = loadValue(value);
+			asyncPut(cacheKey, cacheValue, expiredTime, operation);
 		}
 		return cacheValue;
 	}
@@ -92,12 +183,12 @@ public class CallbackCache extends CacheDecorator {
 	}
 	
 	// ---- remove methods
-	public <T> T remove(Object param, KeyGenerator key) {
-		return remove(generateKey(param, key));
+	public <T> T remove(KeyGenerator key) {
+		return remove(generateKey(key));
 	}
 	
-	public <T> Future<T> asyncRemove(Object param, KeyGenerator key) {
-	    return asyncRemove(generateKey(param, key));
+	public <T> Future<T> asyncRemove(KeyGenerator key) {
+	    return asyncRemove(generateKey(key));
 	}
 	
 	public <T> List<T> removes(Object[] params, KeyBatchGenerator<Object> key) {
@@ -122,40 +213,40 @@ public class CallbackCache extends CacheDecorator {
 	}
 	
     // --- number operation
-    public long getNumber(Object param, KeyGenerator key) {
-        return getNumber(generateKey(param, key));
+    public long getNumber(KeyGenerator key) {
+        return getNumber(generateKey(key));
     }
     
-    public long increase(Object param, KeyGenerator key, long value) {
-        return increase(generateKey(param, key), value);
+    public long increase(KeyGenerator key, long value) {
+        return increase(generateKey(key), value);
     }
     
-    public long increase(Object param, KeyGenerator key, ValueLoader<Long> value) {
-        return increase(generateKey(param, key), loadValue(param, value).longValue());
+    public long increase(KeyGenerator key, ValueLoader<Long> value) {
+        return increase(generateKey(key), loadValue(value).longValue());
     }
     
-    public Future<Long> asyncIncrease(Object param, KeyGenerator key, long value) {
-        return asyncIncrease(generateKey(param, key), value);
+    public Future<Long> asyncIncrease(KeyGenerator key, long value) {
+        return asyncIncrease(generateKey(key), value);
     }
     
-    public Future<Long> asyncIncrease(Object param, KeyGenerator key, ValueLoader<Long> value) {
-        return asyncIncrease(generateKey(param, key), loadValue(param, value).longValue());
+    public Future<Long> asyncIncrease(KeyGenerator key, ValueLoader<Long> value) {
+        return asyncIncrease(generateKey(key), loadValue(value).longValue());
     }
 
-    public long decrease(Object param, KeyGenerator key, long value) {
-        return decrease(generateKey(param, key), value);
+    public long decrease(KeyGenerator key, long value) {
+        return decrease(generateKey(key), value);
     }
     
-    public long decrease(Object param, KeyGenerator key, ValueLoader<Long> value) {
-        return decrease(generateKey(param, key), loadValue(param, value).longValue());
+    public long decrease(KeyGenerator key, ValueLoader<Long> value) {
+        return decrease(generateKey(key), loadValue(value).longValue());
     }
     
-    public Future<Long> asyncDecrease(Object param, KeyGenerator key, long value) {
-        return asyncDecrease(generateKey(param, key), value);
+    public Future<Long> asyncDecrease(KeyGenerator key, long value) {
+        return asyncDecrease(generateKey(key), value);
     }
     
-    public Future<Long> asyncDecrease(Object param, KeyGenerator key, ValueLoader<Long> value) {
-        return asyncDecrease(generateKey(param, key), loadValue(param, value).longValue());
+    public Future<Long> asyncDecrease(KeyGenerator key, ValueLoader<Long> value) {
+        return asyncDecrease(generateKey(key), loadValue(value).longValue());
     }
     
     // ---- reload methods
@@ -168,8 +259,8 @@ public class CallbackCache extends CacheDecorator {
     }
     
 	// ---- private methods
-	private String generateKey(Object param, KeyGenerator key) {
-        return buildVersionCacheKey(key.generateKey(param));
+	private <T> String generateKey(KeyGenerator key) {
+        return buildVersionCacheKey(key.generateKey());
     }
 	
 	private <T> Map<String, T> generateKeys(T[] param, KeyBatchGenerator<T> key) {
@@ -189,8 +280,8 @@ public class CallbackCache extends CacheDecorator {
 	    return _version + "-" + key;
 	}
 	
-	private <T> T loadValue(Object param, ValueLoader<T> value) {
-	    return value.loadValue(param);
+	private <T> T loadValue(ValueLoader<T> value) {
+	    return value.loadValue();
 	}
 	
 }

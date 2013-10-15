@@ -1,7 +1,6 @@
 package com.mtoolkit.cache.decorator;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,16 +62,6 @@ public class HashKeyCache extends CacheDecorator {
 	}
 
 	@Override
-	public boolean put(String key, Object value, Date expiredDate) {
-		return getDelegateCache().put(hashCodeKey(key), value, expiredDate);
-	}
-	
-	@Override
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate) {
-		return getDelegateCache().asyncPut(hashCodeKey(key), value, expiredDate);
-	}
-
-	@Override
 	public boolean put(String key, Object value, CasOperation<Object> operation) {
 		return getDelegateCache().put(hashCodeKey(key), value, operation);
 	}
@@ -90,16 +79,6 @@ public class HashKeyCache extends CacheDecorator {
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime, CasOperation<Object> operation) {
 		return getDelegateCache().asyncPut(hashCodeKey(key), value, expiredTime, operation);
-	}
-
-	@Override
-	public boolean put(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-		return getDelegateCache().put(hashCodeKey(key), value, expiredDate, operation);
-	}
-	
-	@Override
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-		return getDelegateCache().asyncPut(hashCodeKey(key), value, expiredDate, operation);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package com.mtoolkit.cache;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -21,7 +20,7 @@ public interface Cache {
 	 * Startup the cache engine with the specified properties configuration.
 	 * 
 	 */
-	public void startup();
+	public Cache startup();
 
 	/**
 	 * Shutdown current cache engine.
@@ -89,8 +88,8 @@ public interface Cache {
 	 * @throws IllegalStateException	
 	 * 		   if current cache engine is not started.
 	 */
-	public boolean put(String key, Object value, Date expiredDate);
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate);
+//	public boolean put(String key, Object value, Date expiredDate);
+//	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate);
 
 	/**
 	 * Puts or updates the value into cache with the specified cache key,
@@ -148,8 +147,8 @@ public interface Cache {
 	 * @throws IllegalStateException	
 	 * 		   if current cache engine is not started.
 	 */
-	public boolean put(String key, Object value, Date expiredDate, CasOperation<Object> operation);
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate, CasOperation<Object> operation);
+//	public boolean put(String key, Object value, Date expiredDate, CasOperation<Object> operation);
+//	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate, CasOperation<Object> operation);
 
 	/**
 	 * Puts or updates the value into cache with the specified cache key,

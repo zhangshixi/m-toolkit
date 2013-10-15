@@ -3,9 +3,7 @@ package com.mtoolkit.cache.support;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,12 +50,14 @@ public abstract class AbstractCache implements Cache {
 	protected abstract void doDestroy();
 	
 	@Override
-	public void startup() {
+	public Cache startup() {
 		if (!_initialized) {
 			doInitialize();
 			_threadPoolManager = new ThreadPoolManager(getAsyncThreadPoolSize());
 			_initialized = true;
 		}
+		
+		return this;
 	}
 
 	@Override
@@ -103,16 +103,6 @@ public abstract class AbstractCache implements Cache {
 	}
 
 	@Override
-	public boolean put(String key, Object value, Date expiredDate) {
-	    return put(key, value, checkExpiredDate(expiredDate));
-	}
-	
-	@Override
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate) {
-		return asyncPut(key, value, checkExpiredDate(expiredDate));
-	}
-	
-	@Override
 	public boolean put(String key, Object value, long expiredTime) {
 	    return put(key, value, expiredTime, null);
 	}
@@ -132,16 +122,6 @@ public abstract class AbstractCache implements Cache {
 	public Future<Boolean> asyncPut(String key, Object value, CasOperation<Object> operation) {
 		return asyncPut(key, value, DEF_EXPIRED_TIME, operation);
 		// maybe subclass need re-implement
-	}
-	
-	@Override
-	public boolean put(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-	    return put(key, value, checkExpiredDate(expiredDate), operation);
-	}
-	
-	@Override
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-		return asyncPut(key, value, checkExpiredDate(expiredDate), operation);
 	}
 	
 //	@Override
@@ -361,17 +341,8 @@ public abstract class AbstractCache implements Cache {
         return props;
     }
 	
-	// ---- private methods
-	private long checkExpiredDate(Date expiredDate) {
-		Date currentDate = Calendar.getInstance().getTime();
-		if (expiredDate.before(currentDate)) {
-			throw new IllegalArgumentException("ExpiredDate should not after current date: " + expiredDate);
-		}
 
-		return expiredDate.getTime() - currentDate.getTime();
-	}
-
-	// ---- inner classes
+    // ---- inner classes
 	public static class SucceedFuture<T> implements Future<T> {
 		
 		public static SucceedFuture<Boolean> BOOLEAN_TRUE  = new SucceedFuture<Boolean>(Boolean.TRUE);

@@ -1,7 +1,6 @@
 package com.mtoolkit.cache.support;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -50,16 +49,6 @@ public class VirtualCache extends AbstractCache {
     }
     
     @Override
-    public boolean put(String key, Object value, Date expiredDate) {
-        return true;
-    }
-    
-    @Override
-    public Future<Boolean> asyncPut(String key, Object value, Date expiredDate) {
-    	return SucceedFuture.BOOLEAN_TRUE;
-    }
-
-    @Override
     public boolean put(String key, Object value, long expiredTime) {
         return true;
     }
@@ -76,16 +65,6 @@ public class VirtualCache extends AbstractCache {
     
     @Override
     public Future<Boolean> asyncPut(String key, Object value, CasOperation<Object> operation) {
-    	return SucceedFuture.BOOLEAN_TRUE;
-    }
-    
-    @Override
-    public boolean put(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-        return true;
-    }
-    
-    @Override
-    public Future<Boolean> asyncPut(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
     	return SucceedFuture.BOOLEAN_TRUE;
     }
     

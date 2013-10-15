@@ -1,6 +1,5 @@
 package com.mtoolkit.cache.decorator;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.concurrent.Future;
 
@@ -60,18 +59,6 @@ public class FifoCache extends CacheDecorator {
 	}
 	
 	@Override
-	public boolean put(String key, Object value, Date expiredDate) {
-		cycleKeyList(key, false);
-		return getDelegateCache().put(key, value, expiredDate);
-	}
-	
-	@Override
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate) {
-		cycleKeyList(key, true);
-		return getDelegateCache().asyncPut(key, value, expiredDate);
-	}
-	
-	@Override
 	public boolean put(String key, Object value, CasOperation<Object> operation) {
 		cycleKeyList(key, false);
 		return getDelegateCache().put(key, value, operation);
@@ -93,18 +80,6 @@ public class FifoCache extends CacheDecorator {
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime, CasOperation<Object> operation) {
 		cycleKeyList(key, true);
 		return getDelegateCache().asyncPut(key, value, expiredTime, operation);
-	}
-	
-	@Override
-	public boolean put(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-		cycleKeyList(key, false);
-		return getDelegateCache().put(key, value, expiredDate, operation);
-	}
-	
-	@Override
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-		cycleKeyList(key, true);
-		return getDelegateCache().asyncPut(key, value, expiredDate, operation);
 	}
 
 	@Override

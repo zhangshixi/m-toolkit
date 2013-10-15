@@ -1,6 +1,5 @@
 package com.mtoolkit.cache.decorator;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -41,8 +40,9 @@ public abstract class CacheDecorator implements Cache {
 	}
 	
 	@Override
-	public void startup() {
+	public Cache startup() {
 		_cache.startup();
+		return this;
 	}
 
 	@Override
@@ -86,16 +86,6 @@ public abstract class CacheDecorator implements Cache {
 	}
 	
 	@Override
-	public boolean put(String key, Object value, Date expiredDate) {
-		return _cache.put(key, value, expiredDate);
-	}
-	
-	@Override
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate) {
-		return _cache.asyncPut(key, value, expiredDate);
-	}
-	
-	@Override
 	public boolean put(String key, Object value, CasOperation<Object> operation) {
 		return _cache.put(key, value, operation);
 	}
@@ -115,16 +105,6 @@ public abstract class CacheDecorator implements Cache {
 		return _cache.asyncPut(key, value, expiredTime, operation);
 	}
 	
-	@Override
-	public boolean put(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-		return _cache.put(key, value, expiredDate, operation);
-	}
-	
-	@Override
-	public Future<Boolean> asyncPut(String key, Object value, Date expiredDate, CasOperation<Object> operation) {
-		return _cache.asyncPut(key, value, expiredDate, operation);
-	}
-
 	@Override
 	public <T> T get(String key) {
 		return _cache.get(key);
