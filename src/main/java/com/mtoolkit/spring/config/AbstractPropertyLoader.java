@@ -3,6 +3,8 @@ package com.mtoolkit.spring.config;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import com.mtoolkit.util.EmptyUtil;
+
 public class AbstractPropertyLoader implements PropertyLoader {
 
 	private Properties props;
@@ -21,7 +23,7 @@ public class AbstractPropertyLoader implements PropertyLoader {
 
 	protected String getProperty(String key) {
 	    String value = getConfigProperty(key);
-		return value == null ? null : getSystemProperty(key);
+		return EmptyUtil.isNotNullEmpty(value) ? value : getSystemProperty(key);
 	}
 	
 	protected String getConfigProperty(String key) {
