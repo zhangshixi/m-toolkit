@@ -52,7 +52,7 @@ public class SpringMvcDispatcherServlet extends DispatcherServlet {
      * @param request http request.
      */
     @SuppressWarnings("unchecked")
-    private void logBeforeRequest(HttpServletRequest request) {
+    protected void logBeforeRequest(HttpServletRequest request) {
     	String contentType = request.getContentType();
     	if (EmptyUtil.isNotNullEmpty(contentType)) {
     		LOGGER.debug("==> Request contentType: {0}", request.getContentType());
@@ -73,7 +73,7 @@ public class SpringMvcDispatcherServlet extends DispatcherServlet {
      * 
      * @param request http request.
      */
-    private void logAfterRequest(HttpServletResponse response) {
+    protected void logAfterRequest(HttpServletResponse response) {
     	String contentType = response.getContentType();
     	if (EmptyUtil.isNotNullEmpty(contentType)) {
     		LOGGER.debug("<== Response contentType: {0}", response.getContentType());

@@ -38,58 +38,58 @@ public class HashKeyCache extends CacheDecorator {
 	
 	@Override
 	public boolean containsKey(String key) {
-		return getDelegateCache().containsKey(hashCodeKey(key));
+		return getCache().containsKey(hashCodeKey(key));
 	}
 
 	@Override
 	public boolean put(String key, Object value) {
-		return getDelegateCache().put(hashCodeKey(key), value);
+		return getCache().put(hashCodeKey(key), value);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value) {
-		return getDelegateCache().asyncPut(hashCodeKey(key), value);
+		return getCache().asyncPut(hashCodeKey(key), value);
 	}
 	
 	@Override
 	public boolean put(String key, Object value, long expiredTime) {
-		return getDelegateCache().put(hashCodeKey(key), value, expiredTime);
+		return getCache().put(hashCodeKey(key), value, expiredTime);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime) {
-		return getDelegateCache().asyncPut(hashCodeKey(key), value, expiredTime);
+		return getCache().asyncPut(hashCodeKey(key), value, expiredTime);
 	}
 
 	@Override
 	public boolean put(String key, Object value, CasOperation<Object> operation) {
-		return getDelegateCache().put(hashCodeKey(key), value, operation);
+		return getCache().put(hashCodeKey(key), value, operation);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, CasOperation<Object> operation) {
-		return getDelegateCache().asyncPut(hashCodeKey(key), value, operation);
+		return getCache().asyncPut(hashCodeKey(key), value, operation);
 	}
 
 	@Override
 	public boolean put(String key, Object value, long expiredTime, CasOperation<Object> operation) {
-		return getDelegateCache().put(hashCodeKey(key), value, expiredTime, operation);
+		return getCache().put(hashCodeKey(key), value, expiredTime, operation);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime, CasOperation<Object> operation) {
-		return getDelegateCache().asyncPut(hashCodeKey(key), value, expiredTime, operation);
+		return getCache().asyncPut(hashCodeKey(key), value, expiredTime, operation);
 	}
 
 	@Override
 	public <T> T get(String key) {
-		return getDelegateCache().get(hashCodeKey(key));
+		return getCache().get(hashCodeKey(key));
 	}
 
 	@Override
 	public <T> Map<String, T> get(String[] keys) {
 		if (keys == null || keys.length == 0) {
-			return getDelegateCache().get(keys);
+			return getCache().get(keys);
 		}
 
 		Map<String, String> keyMap = new HashMap<String, String>(keys.length, 1F);
@@ -100,7 +100,7 @@ public class HashKeyCache extends CacheDecorator {
 		}
 
 		String[] hashKeys = keyMap.keySet().toArray(new String[keyMap.size()]);
-		Map<String, T> values = getDelegateCache().get(hashKeys);
+		Map<String, T> values = getCache().get(hashKeys);
 
 		Map<String, T> resultMap = new HashMap<String, T>(keys.length, 1F);
 		for (Entry<String, T> entry : values.entrySet()) {
@@ -112,18 +112,18 @@ public class HashKeyCache extends CacheDecorator {
 
 	@Override
 	public <T> T remove(String key) {
-		return getDelegateCache().remove(hashCodeKey(key));
+		return getCache().remove(hashCodeKey(key));
 	}
 	
 	@Override
 	public <T> Future<T> asyncRemove(String key) {
-		return getDelegateCache().asyncRemove(hashCodeKey(key));
+		return getCache().asyncRemove(hashCodeKey(key));
 	}
 
 	@Override
 	public <T> List<T> remove(String[] keys) {
 		if (keys == null || keys.length == 0) {
-			return getDelegateCache().remove(keys);
+			return getCache().remove(keys);
 		}
 
 		String[] hashKeys = new String[keys.length];
@@ -131,13 +131,13 @@ public class HashKeyCache extends CacheDecorator {
 			hashKeys[i] = hashCodeKey(keys[i]);
 		}
 
-		return getDelegateCache().remove(hashKeys);
+		return getCache().remove(hashKeys);
 	}
 	
 	@Override
 	public <T> Future<List<T>> asyncRemove(String[] keys) {
 		if (keys == null || keys.length == 0) {
-			return getDelegateCache().asyncRemove(keys);
+			return getCache().asyncRemove(keys);
 		}
 		
 		String[] hashKeys = new String[keys.length];
@@ -145,32 +145,32 @@ public class HashKeyCache extends CacheDecorator {
 			hashKeys[i] = hashCodeKey(keys[i]);
 		}
 		
-		return getDelegateCache().asyncRemove(hashKeys);
+		return getCache().asyncRemove(hashKeys);
 	}
 	
 	@Override
 	public long getNumber(String key) {
-		return getDelegateCache().getNumber(hashCodeKey(key));
+		return getCache().getNumber(hashCodeKey(key));
 	}
 	
 	@Override
 	public long increase(String key, long value) {
-		return getDelegateCache().increase(hashCodeKey(key), value);
+		return getCache().increase(hashCodeKey(key), value);
 	}
 	
 	@Override
 	public Future<Long> asyncIncrease(String key, long value) {
-		return getDelegateCache().asyncIncrease(hashCodeKey(key), value);
+		return getCache().asyncIncrease(hashCodeKey(key), value);
 	}
 	
 	@Override
 	public long decrease(String key, long value) {
-		return getDelegateCache().decrease(hashCodeKey(key), value);
+		return getCache().decrease(hashCodeKey(key), value);
 	}
 	
 	@Override
 	public Future<Long> asyncDecrease(String key, long value) {
-		return getDelegateCache().asyncDecrease(hashCodeKey(key), value);
+		return getCache().asyncDecrease(hashCodeKey(key), value);
 	}
 	
 	// ---- private methods

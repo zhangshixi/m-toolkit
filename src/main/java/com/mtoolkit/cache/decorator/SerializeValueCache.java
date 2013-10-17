@@ -30,56 +30,56 @@ public class SerializeValueCache extends CacheDecorator {
 
 	@Override
 	public boolean put(String key, Object value) {
-		return getDelegateCache().put(key, serialize(value));
+		return getCache().put(key, serialize(value));
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value) {
-		return getDelegateCache().asyncPut(key, serialize(value));
+		return getCache().asyncPut(key, serialize(value));
 	}
 
 	@Override
 	public boolean put(String key, Object value, long expiredTime) {
-		return getDelegateCache().put(key, serialize(value), expiredTime);
+		return getCache().put(key, serialize(value), expiredTime);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime) {
-		return getDelegateCache().asyncPut(key, serialize(value), expiredTime);
+		return getCache().asyncPut(key, serialize(value), expiredTime);
 	}
 
 	@Override
 	public boolean put(String key, Object value, CasOperation<Object> operation) {
-		return getDelegateCache().put(key, serialize(value), operation);
+		return getCache().put(key, serialize(value), operation);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, CasOperation<Object> operation) {
-		return getDelegateCache().asyncPut(key, serialize(value), operation);
+		return getCache().asyncPut(key, serialize(value), operation);
 	}
 	
 	@Override
 	public boolean put(String key, Object value, long expiredTime, CasOperation<Object> operation) {
-		return getDelegateCache().put(key, serialize(value), expiredTime, operation);
+		return getCache().put(key, serialize(value), expiredTime, operation);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime, CasOperation<Object> operation) {
-		return getDelegateCache().asyncPut(key, serialize(value), expiredTime, operation);
+		return getCache().asyncPut(key, serialize(value), expiredTime, operation);
 	}
 	
 	@Override
 	public <T> T get(String key) {
-		return deserialize((byte[]) getDelegateCache().get(key));
+		return deserialize((byte[]) getCache().get(key));
 	}
 
 	@Override
 	public <T> Map<String, T> get(String[] keys) {
 		if (keys == null || keys.length == 0) {
-			return getDelegateCache().get(keys);
+			return getCache().get(keys);
 		}
 
-		Map<String, byte[]> values = getDelegateCache().get(keys);
+		Map<String, byte[]> values = getCache().get(keys);
 		if (values == null || values.isEmpty()) {
 			return Collections.emptyMap();
 		}

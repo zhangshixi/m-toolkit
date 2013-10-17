@@ -48,61 +48,61 @@ public class SoftCache extends CacheDecorator {
     @Override
 	public boolean put(String key, Object value) {
     	gcSoftEntries(false);
-		return getDelegateCache().put(key, new SoftEntry(key, value, _gcEntryQueue));
+		return getCache().put(key, new SoftEntry(key, value, _gcEntryQueue));
 	}
     
     @Override
     public Future<Boolean> asyncPut(String key, Object value) {
     	gcSoftEntries(true);
-    	return getDelegateCache().asyncPut(key, new SoftEntry(key, value, _gcEntryQueue));
+    	return getCache().asyncPut(key, new SoftEntry(key, value, _gcEntryQueue));
     }
 	
 	@Override
 	public boolean put(String key, Object value, long expiredTime) {
 		gcSoftEntries(false);
-		return getDelegateCache().put(key, new SoftEntry(key, value, _gcEntryQueue), expiredTime);
+		return getCache().put(key, new SoftEntry(key, value, _gcEntryQueue), expiredTime);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime) {
 		gcSoftEntries(true);
-		return getDelegateCache().asyncPut(key, new SoftEntry(key, value, _gcEntryQueue), expiredTime);
+		return getCache().asyncPut(key, new SoftEntry(key, value, _gcEntryQueue), expiredTime);
 	}
 	
 	@Override
 	public boolean put(String key, Object value, CasOperation<Object> operation) {
 		gcSoftEntries(false);
-		return getDelegateCache().put(key, new SoftEntry(key, value, _gcEntryQueue), operation);
+		return getCache().put(key, new SoftEntry(key, value, _gcEntryQueue), operation);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, CasOperation<Object> operation) {
 		gcSoftEntries(true);
-		return getDelegateCache().asyncPut(key, new SoftEntry(key, value, _gcEntryQueue), operation);
+		return getCache().asyncPut(key, new SoftEntry(key, value, _gcEntryQueue), operation);
 	}
 
 	@Override
 	public boolean put(String key, Object value, long expiredTime, CasOperation<Object> operation) {
 		gcSoftEntries(false);
-		return getDelegateCache().put(key, new SoftEntry(key, value, _gcEntryQueue), expiredTime, operation);
+		return getCache().put(key, new SoftEntry(key, value, _gcEntryQueue), expiredTime, operation);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime, CasOperation<Object> operation) {
 		gcSoftEntries(true);
-		return getDelegateCache().asyncPut(key, new SoftEntry(key, value, _gcEntryQueue), expiredTime, operation);
+		return getCache().asyncPut(key, new SoftEntry(key, value, _gcEntryQueue), expiredTime, operation);
 	}
 
     @Override
     public <T> T get(String key) {
-        SoftReference<T> softReference = getDelegateCache().get(key);
+        SoftReference<T> softReference = getCache().get(key);
     	if (softReference == null) {
     	    return null;
     	}
     	
     	T value = softReference.get();
     	if (value == null) {
-    	    getDelegateCache().asyncRemove(key);
+    	    getCache().asyncRemove(key);
     	} else {
     	    _avoidGcHardLinks.addFirst(value);
     	    if (_avoidGcHardLinks.size() > _hardLinksNumber) {
@@ -115,7 +115,7 @@ public class SoftCache extends CacheDecorator {
 
     @Override
     public <T> Map<String, T> get(String[] keys) {
-        Map<String, SoftReference<T>> softReferenceMap = getDelegateCache().get(keys);
+        Map<String, SoftReference<T>> softReferenceMap = getCache().get(keys);
         if (softReferenceMap == null || softReferenceMap.isEmpty()) {
             return Collections.emptyMap();
         }
@@ -135,7 +135,7 @@ public class SoftCache extends CacheDecorator {
             }
         }
     	
-        getDelegateCache().asyncRemove(removeKeySet.toArray(new String[0]));
+        getCache().asyncRemove(removeKeySet.toArray(new String[0]));
         
         return resultMap;
     }
@@ -143,25 +143,25 @@ public class SoftCache extends CacheDecorator {
     @Override
     public <T> T remove(String key) {
     	gcSoftEntries(false);
-    	return getDelegateCache().remove(key);
+    	return getCache().remove(key);
     }
     
     @Override
     public <T> Future<T> asyncRemove(String key) {
     	gcSoftEntries(true);
-    	return getDelegateCache().asyncRemove(key);
+    	return getCache().asyncRemove(key);
     }
     
     @Override
     public <T> List<T> remove(String[] keys) {
         gcSoftEntries(false);
-    	return getDelegateCache().remove(keys);
+    	return getCache().remove(keys);
     }
     
     @Override
     public <T> Future<List<T>> asyncRemove(String[] keys) {
         gcSoftEntries(true);
-    	return getDelegateCache().asyncRemove(keys);
+    	return getCache().asyncRemove(keys);
     }
 
     @Override
@@ -183,25 +183,25 @@ public class SoftCache extends CacheDecorator {
     @Override
     public long getNumber(String key) {
     	// soft reference unsupported
-        return getDelegateCache().getNumber(key);
+        return getCache().getNumber(key);
     }
 
     @Override
     public long increase(String key, long value) {
         // soft reference unsupported
-        return getDelegateCache().increase(key, value);
+        return getCache().increase(key, value);
     }
     
     @Override
     public Future<Long> asyncIncrease(String key, long value) {
         // soft reference unsupported
-    	return getDelegateCache().asyncIncrease(key, value);
+    	return getCache().asyncIncrease(key, value);
     }
     
     @Override
     public long decrease(String key, long value) {
         // soft reference unsupported
-    	return getDelegateCache().decrease(key, value);
+    	return getCache().decrease(key, value);
     }
     
     // ---- private methods

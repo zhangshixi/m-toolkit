@@ -28,56 +28,56 @@ public class GzipValueCache extends CacheDecorator {
 	
 	@Override
 	public boolean put(String key, Object value) {
-		return getDelegateCache().put(key, gzip(value));
+		return getCache().put(key, gzip(value));
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value) {
-		return getDelegateCache().asyncPut(key, gzip(value));
+		return getCache().asyncPut(key, gzip(value));
 	}
 
 	@Override
 	public boolean put(String key, Object value, long expiredTime) {
-		return getDelegateCache().put(key, gzip(value), expiredTime);
+		return getCache().put(key, gzip(value), expiredTime);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime) {
-		return getDelegateCache().asyncPut(key, gzip(value), expiredTime);
+		return getCache().asyncPut(key, gzip(value), expiredTime);
 	}
 	
 	@Override
 	public boolean put(String key, Object value, CasOperation<Object> operation) {
-		return getDelegateCache().put(key, gzip(value), operation);
+		return getCache().put(key, gzip(value), operation);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, CasOperation<Object> operation) {
-		return getDelegateCache().asyncPut(key, gzip(value), operation);
+		return getCache().asyncPut(key, gzip(value), operation);
 	}
 	
 	@Override
 	public boolean put(String key, Object value, long expiredTime, CasOperation<Object> operation) {
-		return getDelegateCache().put(key, gzip(value), expiredTime, operation);
+		return getCache().put(key, gzip(value), expiredTime, operation);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime, CasOperation<Object> operation) {
-		return getDelegateCache().asyncPut(key, gzip(value), expiredTime, operation);
+		return getCache().asyncPut(key, gzip(value), expiredTime, operation);
 	}
 	
 	@Override
 	public <T> T get(String key) {
-		return unGzip((byte[]) getDelegateCache().get(key));
+		return unGzip((byte[]) getCache().get(key));
 	}
 	
 	@Override
 	public <T> Map<String, T> get(String[] keys) {
 		if (keys == null || keys.length == 0) {
-			return getDelegateCache().get(keys);
+			return getCache().get(keys);
 		}
 
-		Map<String, byte[]> values = getDelegateCache().get(keys);
+		Map<String, byte[]> values = getCache().get(keys);
 		if (values == null || values.isEmpty()) {
 			return Collections.emptyMap();
 		}
