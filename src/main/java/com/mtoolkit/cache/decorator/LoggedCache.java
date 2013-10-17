@@ -23,7 +23,7 @@ public class LoggedCache extends CacheDecorator {
 			LOGGER.warn("Cache:[id={0}] has been initialized.", getId());
 		}
 		
-		getDelegateCache().startup();
+		getCache().startup();
 		
 		LOGGER.info("Cache:[id={0}] startup succeed.", getId());
 		
@@ -36,24 +36,24 @@ public class LoggedCache extends CacheDecorator {
 			LOGGER.warn("Cache:[id={0}] has not been initialized.", getId());
 		}
 		
-		getDelegateCache().shutdown();
+		getCache().shutdown();
 		
 		LOGGER.info("Cache:[id={0}] shutdown succeed.", getId());
 	}
 	
 	@Override
 	public String getId() {
-		return getDelegateCache().getId();
+		return getCache().getId();
 	}
 
 	@Override
 	public boolean isInitialized() {
-		return getDelegateCache().isInitialized();
+		return getCache().isInitialized();
 	}
 	
 	@Override
 	public boolean containsKey(String key) {
-		boolean result = getDelegateCache().containsKey(key);
+		boolean result = getCache().containsKey(key);
 		LOGGER.debug("Cache contains key test - Argument:[key={0}] - Result:[{1}].", 
 		    key, Boolean.valueOf(result));
 		return result;
@@ -61,7 +61,7 @@ public class LoggedCache extends CacheDecorator {
 
 	@Override
 	public boolean put(String key, Object value) {
-		boolean result = getDelegateCache().put(key, value);
+		boolean result = getCache().put(key, value);
 		LOGGER.debug("Put value into cache - Argument:[key={0}, value={1}] - Result:[{2}].", 
 		    key, value, Boolean.valueOf(result));
 		return result;
@@ -69,7 +69,7 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value) {
-		Future<Boolean> result = getDelegateCache().asyncPut(key, value);
+		Future<Boolean> result = getCache().asyncPut(key, value);
 		LOGGER.debug("Async put value into cache - Argument:[key={0}, value={1}].", 
 		    key, value);
 		return result;
@@ -77,7 +77,7 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public boolean put(String key, Object value, long expiredTime) {
-		boolean result = getDelegateCache().put(key, value, expiredTime);
+		boolean result = getCache().put(key, value, expiredTime);
 		LOGGER.debug("Put value into cache - Argument:[key={0}, value={1}, expiredTime={2}] - Result:[{3}].", 
 		    key, value, Long.valueOf(expiredTime), Boolean.valueOf(result));
 		return result;
@@ -85,7 +85,7 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime) {
-		Future<Boolean> result = getDelegateCache().asyncPut(key, value, expiredTime);
+		Future<Boolean> result = getCache().asyncPut(key, value, expiredTime);
 		LOGGER.debug("Async put value into cache - Argument:[key={0}, value={1}, expiredTime[{2}].", 
 		    key, value, Long.valueOf(expiredTime));
 		return result;
@@ -93,7 +93,7 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public boolean put(String key, Object value, CasOperation<Object> operation) {
-		boolean result = getDelegateCache().put(key, value, operation);
+		boolean result = getCache().put(key, value, operation);
 		LOGGER.debug("Put value into cache - Argument:[key={0}, value={1}, casOperation={2}] - Result:[{3}].", 
 		    key, value, operation, Boolean.valueOf(result));
 		return result;
@@ -101,7 +101,7 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, CasOperation<Object> operation) {
-		Future<Boolean> result = getDelegateCache().asyncPut(key, value, operation);
+		Future<Boolean> result = getCache().asyncPut(key, value, operation);
 		LOGGER.debug("Async put value into cache - Argument:[key={0}, value={1}, casOperation={2}].", 
 		    key, value, operation);
 		return result;
@@ -109,7 +109,7 @@ public class LoggedCache extends CacheDecorator {
 
 	@Override
 	public boolean put(String key, Object value, long expiredTime, CasOperation<Object> operation) {
-		boolean result = getDelegateCache().put(key, value, expiredTime, operation);
+		boolean result = getCache().put(key, value, expiredTime, operation);
 		LOGGER.debug("Put value into cache - Argument:[key={0}, value={1}, expiredTime={2}, casOperation={3}] - Result:[{4}].", 
 			key, value, Long.valueOf(expiredTime), operation, Boolean.valueOf(result));
 		return result;
@@ -117,7 +117,7 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime, CasOperation<Object> operation) {
-		Future<Boolean> result = getDelegateCache().asyncPut(key, value, expiredTime, operation);
+		Future<Boolean> result = getCache().asyncPut(key, value, expiredTime, operation);
 		LOGGER.debug("Async put value into cache - Argument:[key={0}, value={1}, expiredTime={2}, casOperation={3}].", 
 			key, value, Long.valueOf(expiredTime), operation);
 		return result;
@@ -125,7 +125,7 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public <T> T get(String key) {
-		T result =  getDelegateCache().get(key);
+		T result =  getCache().get(key);
 		LOGGER.debug("Get value from cache - Argument:[key={0}] - Result:[{1}].", 
 		    key, result);
 		return result;
@@ -133,7 +133,7 @@ public class LoggedCache extends CacheDecorator {
 
 	@Override
 	public <T> Map<String, T> get(String[] keys) {
-		Map<String, T> results = getDelegateCache().get(keys);
+		Map<String, T> results = getCache().get(keys);
 		LOGGER.debug("Batch get value from cache - Argument:[key={0}] - Result:[{1}].", 
 		    Arrays.toString(keys), results);
 		return results;
@@ -141,7 +141,7 @@ public class LoggedCache extends CacheDecorator {
 
 	@Override
 	public <T> T remove(String key) {
-		T result = getDelegateCache().remove(key);
+		T result = getCache().remove(key);
 		LOGGER.debug("Remove value from cache - Argument:[key={0}] - Result:[{1}].", 
 		    key, result);
 		return result;
@@ -149,7 +149,7 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public <T> Future<T> asyncRemove(String key) {
-		Future<T> result =  getDelegateCache().asyncRemove(key);
+		Future<T> result =  getCache().asyncRemove(key);
 		LOGGER.debug("Async remove value from cache - Argument:[key={0}].", 
 		    key);
 		return result;
@@ -157,7 +157,7 @@ public class LoggedCache extends CacheDecorator {
 
 	@Override
 	public <T> List<T> remove(String[] keys) {
-		List<T> results = getDelegateCache().remove(keys);
+		List<T> results = getCache().remove(keys);
 		LOGGER.debug("Batch remove value from cache - Argument:[key={0}] - Result:[{1}].", 
 		    Arrays.toString(keys), results);
 		return results;
@@ -165,7 +165,7 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public <T> Future<List<T>> asyncRemove(String[] keys) {
-		Future<List<T>> results = getDelegateCache().asyncRemove(keys);
+		Future<List<T>> results = getCache().asyncRemove(keys);
 		LOGGER.debug("Async batch remove value from cache - Argument:[key={0}].", 
 		    Arrays.toString(keys));
 		return results;
@@ -173,7 +173,7 @@ public class LoggedCache extends CacheDecorator {
 
 	@Override
 	public boolean clear() {
-		boolean result = getDelegateCache().clear();
+		boolean result = getCache().clear();
 		LOGGER.debug("Clear cache - Result:[{0}].", 
 		    result);
 		return result;
@@ -181,14 +181,14 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public Future<Boolean> asyncClear() {
-		Future<Boolean> result = getDelegateCache().asyncClear();
+		Future<Boolean> result = getCache().asyncClear();
 		LOGGER.debug("Async clear cache.");
 		return result;
 	}
 	
 	@Override
 	public long getNumber(String key) {
-		long result = getDelegateCache().getNumber(key);
+		long result = getCache().getNumber(key);
 		LOGGER.debug("Get number from cache - Argument:[key={0}] - Result:[{1}].", 
 		    key, Long.valueOf(result));
 		return result;
@@ -196,7 +196,7 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public long increase(String key, long value) {
-		long result = getDelegateCache().increase(key, value);
+		long result = getCache().increase(key, value);
 		LOGGER.debug("Increase number into cache - Argument:[key={0}, value={1}] - Result:[{2}].", 
 		    key, Long.valueOf(value), result);
 		return result;
@@ -204,7 +204,7 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public Future<Long> asyncIncrease(String key, long value) {
-		Future<Long> result = getDelegateCache().asyncIncrease(key, value);
+		Future<Long> result = getCache().asyncIncrease(key, value);
 		LOGGER.debug("Async increase number into cache - Argument:[key={0}, value={1}].", 
 		    key, Long.valueOf(value));
 		return result;
@@ -212,7 +212,7 @@ public class LoggedCache extends CacheDecorator {
 
 	@Override
 	public long decrease(String key, long value) {
-		long result = getDelegateCache().decrease(key, value);
+		long result = getCache().decrease(key, value);
 		LOGGER.debug("Decrease number into cache - Argument:[key={0}, value={1}] - Result:[{2}].", 
 		    key, Long.valueOf(value), result);
 		return result;
@@ -220,7 +220,7 @@ public class LoggedCache extends CacheDecorator {
 	
 	@Override
 	public Future<Long> asyncDecrease(String key, long value) {
-		Future<Long> result = getDelegateCache().asyncDecrease(key, value);
+		Future<Long> result = getCache().asyncDecrease(key, value);
 		LOGGER.debug("Async decrease number into cache - Argument:[key={0}, value={1}].", 
 		    key, Long.valueOf(value));
 		return result;

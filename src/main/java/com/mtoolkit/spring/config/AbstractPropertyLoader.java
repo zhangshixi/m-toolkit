@@ -20,7 +20,16 @@ public class AbstractPropertyLoader implements PropertyLoader {
 	}
 
 	protected String getProperty(String key) {
-		return trim(props.getProperty(key));
+	    String value = getConfigProperty(key);
+		return value == null ? null : getSystemProperty(key);
+	}
+	
+	protected String getConfigProperty(String key) {
+	    return trim(props.getProperty(key));
+	}
+	
+	protected String getSystemProperty(String key) {
+	    return trim(System.getProperty(key));
 	}
 	
 	/* ---- private methods ---- */

@@ -51,49 +51,49 @@ public class LruCache extends CacheDecorator {
     @Override
 	public boolean put(String key, Object value) {
     	cycleKeyMap(key, false);
-		return getDelegateCache().put(key, value);
+		return getCache().put(key, value);
 	}
     
     @Override
     public Future<Boolean> asyncPut(String key, Object value) {
     	cycleKeyMap(key, true);
-    	return getDelegateCache().asyncPut(key, value);
+    	return getCache().asyncPut(key, value);
     }
 	
 	@Override
 	public boolean put(String key, Object value, long expiredTime) {
 		cycleKeyMap(key, false);
-		return getDelegateCache().put(key, value, expiredTime);
+		return getCache().put(key, value, expiredTime);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime) {
 		cycleKeyMap(key, true);
-		return getDelegateCache().asyncPut(key, value, expiredTime);
+		return getCache().asyncPut(key, value, expiredTime);
 	}
 
 	@Override
 	public boolean put(String key, Object value, CasOperation<Object> operation) {
 		cycleKeyMap(key, false);
-		return getDelegateCache().put(key, value, operation);
+		return getCache().put(key, value, operation);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, CasOperation<Object> operation) {
 	    cycleKeyMap(key, true);
-	    return getDelegateCache().asyncPut(key, value, operation);
+	    return getCache().asyncPut(key, value, operation);
 	}
 	
 	@Override
 	public boolean put(String key, Object value, long expiredTime, CasOperation<Object> operation) {
 	    cycleKeyMap(key, false);
-	    return getDelegateCache().put(key, value, expiredTime, operation);
+	    return getCache().put(key, value, expiredTime, operation);
 	}
 	
 	@Override
 	public Future<Boolean> asyncPut(String key, Object value, long expiredTime, CasOperation<Object> operation) {
 		cycleKeyMap(key, true);
-		return getDelegateCache().asyncPut(key, value, expiredTime, operation);
+		return getCache().asyncPut(key, value, expiredTime, operation);
 	}
 	
     @Override
@@ -113,25 +113,25 @@ public class LruCache extends CacheDecorator {
     @Override
     public long increase(String key, long value) {
         cycleKeyMap(key, false);
-        return getDelegateCache().increase(key, value);
+        return getCache().increase(key, value);
     }
     
     @Override
     public Future<Long> asyncIncrease(String key, long value) {
         cycleKeyMap(key, true);
-        return getDelegateCache().asyncIncrease(key, value);
+        return getCache().asyncIncrease(key, value);
     }
 
     @Override
     public long decrease(String key, long value) {
         cycleKeyMap(key, false);
-        return getDelegateCache().decrease(key, value);
+        return getCache().decrease(key, value);
     }
     
     @Override
     public Future<Long> asyncDecrease(String key, long value) {
         cycleKeyMap(key, true);
-        return getDelegateCache().asyncDecrease(key, value);
+        return getCache().asyncDecrease(key, value);
     }
     
     // ---- private methods

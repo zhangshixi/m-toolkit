@@ -19,6 +19,9 @@ public class CallbackCache extends CacheDecorator {
 	public static final String DEFAULT_CACHE_VERSION = "1.0";
 	
 	// ---- constructors
+    public CallbackCache() {
+    }
+	
 	public CallbackCache(Cache cache) {
 		this(cache, DEFAULT_CACHE_VERSION);
 	}

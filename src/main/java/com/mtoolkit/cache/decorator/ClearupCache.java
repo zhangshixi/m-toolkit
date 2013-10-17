@@ -31,23 +31,23 @@ public class ClearupCache extends CacheDecorator {
     @Override
     public Cache startup() {
         _lastClearTime = System.currentTimeMillis();
-        getDelegateCache().startup();
+        getCache().startup();
         return this;
     }
 
     @Override
     public void shutdown() {
-        getDelegateCache().shutdown();
+        getCache().shutdown();
     }
     
     @Override
     public String getId() {
-        return getDelegateCache().getId();
+        return getCache().getId();
     }
 
     @Override
     public boolean isInitialized() {
-        return getDelegateCache().isInitialized();
+        return getCache().isInitialized();
     }
     
     @Override
@@ -55,56 +55,56 @@ public class ClearupCache extends CacheDecorator {
         if (clearWhenStale()) {
             return false;
         } else {
-            return getDelegateCache().containsKey(key);
+            return getCache().containsKey(key);
         }
     }
 
     @Override
     public boolean put(String key, Object value) {
         clearWhenStale();
-        return getDelegateCache().put(key, value);
+        return getCache().put(key, value);
     }
     
     @Override
     public Future<Boolean> asyncPut(String key, Object value) {
         clearWhenStale();
-        return getDelegateCache().asyncPut(key, value);
+        return getCache().asyncPut(key, value);
     }
     
     @Override
     public boolean put(String key, Object value, long expiredTime) {
         clearWhenStale();
-        return getDelegateCache().put(key, value, expiredTime);
+        return getCache().put(key, value, expiredTime);
     }
     
     @Override
     public Future<Boolean> asyncPut(String key, Object value, long expiredTime) {
         clearWhenStale();
-        return getDelegateCache().asyncPut(key, value, expiredTime);
+        return getCache().asyncPut(key, value, expiredTime);
     }
     
     @Override
     public boolean put(String key, Object value, CasOperation<Object> operation) {
         clearWhenStale();
-        return getDelegateCache().put(key, value, operation);
+        return getCache().put(key, value, operation);
     }
     
     @Override
     public Future<Boolean> asyncPut(String key, Object value, CasOperation<Object> operation) {
         clearWhenStale();
-        return getDelegateCache().asyncPut(key, value, operation);
+        return getCache().asyncPut(key, value, operation);
     }
 
     @Override
     public boolean put(String key, Object value, long expiredTime, CasOperation<Object> operation) {
         clearWhenStale();
-        return getDelegateCache().put(key, value, expiredTime, operation);
+        return getCache().put(key, value, expiredTime, operation);
     }
     
     @Override
     public Future<Boolean> asyncPut(String key, Object value, long expiredTime, CasOperation<Object> operation) {
         clearWhenStale();
-        return getDelegateCache().asyncPut(key, value, expiredTime, operation);
+        return getCache().asyncPut(key, value, expiredTime, operation);
     }
     
     @Override
@@ -112,7 +112,7 @@ public class ClearupCache extends CacheDecorator {
         if (clearWhenStale()) {
             return null;
         } else {
-            return getDelegateCache().get(key);
+            return getCache().get(key);
         }
     }
 
@@ -121,7 +121,7 @@ public class ClearupCache extends CacheDecorator {
         if (clearWhenStale()) {
             return Collections.emptyMap();
         } else {
-            return getDelegateCache().get(keys);
+            return getCache().get(keys);
         }
     }
 
@@ -130,7 +130,7 @@ public class ClearupCache extends CacheDecorator {
         if (clearWhenStale()) {
             return null;
         } else {
-            return getDelegateCache().remove(key);
+            return getCache().remove(key);
         }
     }
     
@@ -139,7 +139,7 @@ public class ClearupCache extends CacheDecorator {
         if (clearWhenStale()) {
             return new SucceedFuture<T>(null);
         } else {
-            return getDelegateCache().asyncRemove(key);
+            return getCache().asyncRemove(key);
         }
     }
 
@@ -148,7 +148,7 @@ public class ClearupCache extends CacheDecorator {
         if (clearWhenStale()) {
             return Collections.emptyList();
         } else {
-            return getDelegateCache().remove(keys);
+            return getCache().remove(keys);
         }
     }
     
@@ -158,50 +158,50 @@ public class ClearupCache extends CacheDecorator {
             List<T> resultList = Collections.emptyList();
             return new SucceedFuture<List<T>>(resultList);
         } else {
-            return getDelegateCache().asyncRemove(keys);
+            return getCache().asyncRemove(keys);
         }
     }
 
     @Override
     public boolean clear() {
         _lastClearTime = System.currentTimeMillis();
-        return getDelegateCache().clear();
+        return getCache().clear();
     }
     
     @Override
     public Future<Boolean> asyncClear() {
         _lastClearTime = System.currentTimeMillis();
-        return getDelegateCache().asyncClear();
+        return getCache().asyncClear();
     }
     
     @Override
     public long getNumber(String key) {
         // clear unsupported
-        return getDelegateCache().getNumber(key);
+        return getCache().getNumber(key);
     }
     
     @Override
     public long increase(String key, long value) {
         // clear unsupported
-        return getDelegateCache().increase(key, value);
+        return getCache().increase(key, value);
     }
     
     @Override
     public Future<Long> asyncIncrease(String key, long value) {
         // clear unsupported
-        return getDelegateCache().asyncIncrease(key, value);
+        return getCache().asyncIncrease(key, value);
     }
 
     @Override
     public long decrease(String key, long value) {
         // clear unsupported
-        return getDelegateCache().decrease(key, value);
+        return getCache().decrease(key, value);
     }
     
     @Override
     public Future<Long> asyncDecrease(String key, long value) {
         // clear unsupported
-        return getDelegateCache().asyncDecrease(key, value);
+        return getCache().asyncDecrease(key, value);
     }
     
     // ---- private methods
