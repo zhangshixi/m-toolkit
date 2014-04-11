@@ -22,7 +22,14 @@ public class MysqlDialect extends AbstractDialect {
 		}
 
 		builder.delete(0, upperSql.indexOf(FROM));
-		builder.insert(0, "SELECT COUNT(1) ");
+		
+		index = upperSql.indexOf(GROUP_BY);
+		if (index > 0) {
+			builder.insert(0, "SELECT COUNT(1) FROM (SELECT 1 ");
+			builder.append(") AS temp");
+		} else {
+			builder.insert(0, "SELECT COUNT(1) ");
+		}
 
 		return builder.toString();
 	}
